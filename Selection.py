@@ -9,20 +9,23 @@ def geraLista(tam):
         if n not in lista: lista.append(n)
     return lista
 
-def insertion_sort(lista):
-    for i in range(1, len(lista)):
-        val = lista[i]
-        j = i - 1
-    while (j >= 0) and (lista[j] > val):
-        interaction += 1
-        lista[j+1] = lista[j]
-        j = j - 1
-        lista[j+1] = val
-    interaction += 1
+def selection_sort(lista):
+    for i in range(len(lista) - 1):
+        minIndx = i
+        minVal= lista[i]
+        j = i + 1
+        while j < len(lista):
+            if minVal > lista[j]:
+                minIndx = j
+                minVal= lista[j]
+            j += 1
+        temp = lista[i]
+        lista[i] = lista[minIndx]
+        lista[minIndx] = temp       
     return lista
 
 def desenhaGrafico(x,y,xl = "Entradas", yl = "Saídas", z='Tempo'):
-    fig = plt.figure(figsize=(10, 8))
+    fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111)
     ax.plot(x,y, label = z)
     ax.legend(bbox_to_anchor=(1, 1),bbox_transform=plt.gcf().transFigure)
@@ -38,12 +41,9 @@ if __name__ == '__main__':
         x.append(geraLista(i))
     y =[]
     for i in range(len(x)):
-        y.append(timeit.timeit("insertion_sort({})".format(x[i]),setup="from __main__ import insertion_sort",number=1))
-
+        y.append(timeit.timeit("selection_sort({})".format(x[i]),setup="from __main__ import selection_sort",number=1))
     desenhaGrafico(z,y)
-
     y = []
     for i in range(len(x)):
-        y.append(timeit.timeit("insertion_sort({})".format(x[i]),setup="from __main__ import insertion_sort",number=1))
-
-    desenhaGrafico(z,y)
+            y.append(selection_sort(x[i]))
+desenhaGrafico(z,y, z='Qtd de swaps')
